@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Anagram {
 //	ArrayVersion { *************************************************************
-	private static final int SIZE_ARRAY = 200;
+//	private static final int SIZE_ARRAY = 200;
 //	ArrayVersion } *************************************************************
 	public static boolean isAnagramLetters(String word, String anagram) {
 		if ("".equals(anagram)) {
@@ -17,31 +17,45 @@ public class Anagram {
 		Objects.requireNonNull(anagram);
 		word.toLowerCase();
 		anagram.toLowerCase();
-
-//		ArrayVersion { *********************************************************
-		int[] ar = new int[SIZE_ARRAY];
-		char curCharacter;
-		for (int i = 0; i < word.length(); i++) {
-			curCharacter = word.charAt(i);
-			ar[curCharacter]++;
-		}
 		
+//		StringBuilderVersion { *************************************************
+		StringBuilder strBld_word = new StringBuilder(word);
+		int index = -1;
 		for (int i = 0; i < anagram.length(); i++) {
-			curCharacter = anagram.charAt(i);
-			if (validateArrayIndex(curCharacter) && ar[curCharacter] > 0) {
-				ar[curCharacter]--;
-			} else {
+			index = strBld_word.indexOf(anagram.substring(i, i + 1));
+			if (index == -1) {
 				return false;
+			} else {
+				strBld_word.deleteCharAt(index);
 			}
 		}
 		return true;
+//		StringBuilderVersion } *************************************************
 	}
+		
+//		ArrayVersion { *********************************************************
+//		int[] ar = new int[SIZE_ARRAY];
+//		char curCharacter;
+//		for (int i = 0; i < word.length(); i++) {
+//			curCharacter = word.charAt(i);
+//			ar[curCharacter]++;
+//		}
+//		
+//		for (int i = 0; i < anagram.length(); i++) {
+//			curCharacter = anagram.charAt(i);
+//			if (validateArrayIndex(curCharacter) && ar[curCharacter] > 0) {
+//				ar[curCharacter]--;
+//			} else {
+//				return false;
+//			}
+//		}
+//		return true;
+		
+//		private static boolean validateArrayIndex(char curCharacter) {
+//			return curCharacter >= 0 && curCharacter < SIZE_ARRAY ? true : false;
+//		}
 //		ArrayVersion } *********************************************************
-		
-		private static boolean validateArrayIndex(char curCharacter) {
-			return curCharacter >= 0 && curCharacter < SIZE_ARRAY ? true : false;
-		}
-		
+	
 // 		HashMapVersion { *******************************************************
 //		HashMap<Character, Integer> characters = new HashMap<>();
 //		Character curCharacter;
@@ -104,5 +118,4 @@ public class Anagram {
 //		}
 //		return true;
 // 		HashMapVersionUseComputeFunction } *************************************
-		
 	}

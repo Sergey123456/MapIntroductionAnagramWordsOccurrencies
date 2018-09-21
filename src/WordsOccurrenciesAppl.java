@@ -1,22 +1,57 @@
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class WordsOccurrenciesAppl {
 
 	public static void main(String[] args) {
 
-		String text="abc ab lmn ab lmn abc, lmn";
+		String text="abc ab lmn ab lmn abc, lmn, zxc, gfh gf zxa zxa";
 		displayWordOccurrencies(text);
 
 	}
 
 	private static void displayWordOccurrencies(String text) {
-		// TODO Auto-generated method stub
-		//text: “abc ab lmn ab lmn abc, lmn”
-		//output:
-		// lmn->3
-		// ab->2
-		// abc->2
+		String[] textArray = text.split("[\\W]+");
+		
+		TreeMap<TreeKey, Integer> treeMap = new TreeMap<>(new Comparator<TreeKey>() {
+			@Override
+			public int compare(TreeKey o1, TreeKey o2) {
+				if (o1.word.equals(o2.word)) {
+					return 0;
+				} else if (o1.number > o2.number) {
+					return -1;
+				} else if(o1.number < o2.number) {
+					return +1;
+				}
+				return o1.word.compareTo(o2.word);
+			}
+		});
+		
+		TreeKey exempleKey;
+		Integer value;
+		for (String string : textArray) {
+			exempleKey 	= new TreeKey(1, string);
+			value 		= null;
+//			for (Entry<TreeKey, Integer> entry : treeMap.entrySet()) {
+//				if (entry.getKey().equals(exempleKey)) {
+//					value = treeMap.remove(entry.getKey());
+//					value++;
+//					treeMap.put(new TreeKey(value, string), value);
+//					break;
+//				}
+//			}
+			if (treeMap.containsKey(exempleKey)) {
+				value = treeMap.remove(exempleKey);
+				value++;
+				treeMap.put(new TreeKey(value, string), value);
+			}
+			if (Objects.isNull(value)) {
+				treeMap.put(exempleKey, 1);
+			}
+		}
+		
+		treeMap.forEach((k, v) -> System.out.println(k.toString() + " -> " + v));
 	}
-
-	
-
 }
